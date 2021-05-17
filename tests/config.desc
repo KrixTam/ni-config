@@ -1,0 +1,58 @@
+{
+    "default": {
+        'base': {
+            'name': 'base_filename',
+            'key': 'key_field'
+        },
+        'output': 'output_filename',
+        'tags': [
+            {
+                'name': 'base_filename',
+                'key': 'key_field',
+                'fields': [
+                    {
+                        'field': 'A',
+                        'default': 'default value of field A'
+                    },
+                    {
+                        'field': 'B',
+                        'default': 'default value of field B'
+                    }
+                ]
+            }
+        ]
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            'base': {
+                "type": "object",
+                "properties": {
+                    'name': { "type": "string" },
+                    'key': { "type": "string" }
+                }
+            },
+            'output': { "type": "string" },
+            'tags': {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        'name': { "type": "string" },
+                        'key': { "type": "string" },
+                        'fields': {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                        'field': { "type": "string" },
+                                        'default': { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
