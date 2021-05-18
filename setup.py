@@ -6,9 +6,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name='pyconfig',
+    name='ni-config',
     version='0.0.1',
-    url='https://github.com/KrixTam/pyconfig',
+    url='https://github.com/KrixTam/ni-config',
     license='MIT',
     author='Krix Tam',
     author_email='krix.tam@qq.com',
@@ -16,7 +16,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     project_urls={
-        "Bug Tracker": "https://github.com/KrixTam/pyconfig/issues",
+        "Bug Tracker": "https://github.com/KrixTam/ni-config/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",

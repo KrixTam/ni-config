@@ -11,16 +11,6 @@ def set_error():
     c['abc'] = 123
 
 
-def checksum(filename):
-    # https://stackoverflow.com/questions/3431825/generating-an-md5-checksum-of-a-file
-    # Note: hash_md5.hexdigest() will return the hex string representation for the digest, if you just need the packed bytes use return hash_md5.digest(), so you don't have to convert back.
-    hash_md5 = hashlib.md5()
-    with open(filename, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-
 class TestConfig(unittest.TestCase):
 
     def test_all(self):
@@ -45,7 +35,7 @@ class TestConfig(unittest.TestCase):
     def test_dump(self):
         c = config('config')
         c.dump()
-        self.assertEqual(checksum(os.path.join(os.getcwd(), 'config.cfg')), checksum(os.path.join(os.getcwd(), 'config.default.cfg')))
+        self.assertEqual(c.load(os.path.join(os.getcwd(), 'config.cfg')), c.load(os.path.join(os.getcwd(), 'config.default.cfg')))
 
 
 if __name__ == '__main__':
