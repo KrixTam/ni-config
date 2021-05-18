@@ -20,7 +20,7 @@ class config(object):
         self._desc = desc['schema']
         self._default = desc['default']
         if self._value is None:
-            self._value = self._default.copy()
+            self.set_default()
         else:
             if self.validate():
                 pass
@@ -49,9 +49,12 @@ class config(object):
         return obj_json
 
     def dump(self):
-        filename = os.path.join(os.getcwd(), self._filenames['cfg'])
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self._value, f, indent=4)
+        if self.validate():
+            filename = os.path.join(os.getcwd(), self._filenames['cfg'])
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(self._value, f, indent=4)
+        else:
+            raise AssertionError('Value of "' + self._name + '" is invalid.')
 
     def __getitem__(self, item):
         if item in self._value:
@@ -77,3 +80,9 @@ class config(object):
 
     def __repr__(self):
         return self._value.__repr__()
+
+    def is_default(self):
+        return self._value == self._default
+
+    def set_default(self):
+        self._value = self._default.copy()
