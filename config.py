@@ -9,25 +9,27 @@ from jsonschema import validate, ValidationError
 
 class config(object):
 
-    def __init__(self, name):
-        self._name = name
-        self._filenames = {
-            'desc': name + '.desc',
-            'cfg': name + '.cfg'
-        }
-        self._value = config.load(self._filenames['cfg'])
-        desc = config.load(self._filenames['desc'])
-        self._desc = desc['schema']
-        self._default = desc['default']
-        if self._value is None:
-            self.set_default()
+    def __init__(self, desc):
+        # 初始化
+        self._name = ''
+        self._value = None
+        self._desc = {}
+        self._default = {}
+        # 根据不同的参数进行构建实例
+        if isinstance(desc, str):
+            filename = desc + '.desc'
+            desc_tmp = config.load(filename)
+            self._name = desc_tmp['name']
+            self._desc = desc_tmp['schema']
+            self._default = desc_tmp['default']
         else:
-            if self.validate():
-                pass
+            if isinstance(desc, dict):
+                self._name = desc['name']
+                self._desc = desc['schema']
+                self._default = desc['default']
             else:
-                raise AssertionError(
-                    'According to description file "' + self._filenames['desc'] + '", the content of config file "' +
-                    self._filenames['cfg'] + '" is invalid.')
+                raise TypeError('Parameter "desc" should be str or dict.')
+        self.set_default()
 
     def validate(self):
         try:
@@ -35,6 +37,15 @@ class config(object):
             return True
         except ValidationError:
             return False
+
+    def load_config(self, config_filename):
+        old_value = self._value.copy()
+        self._value = config.load(config_filename)
+        if self.validate():
+            pass
+        else:
+            self._value = old_value
+            raise ValueError('Value for setting is invalid.')
 
     @staticmethod
     def load(ori_filename):
@@ -48,9 +59,14 @@ class config(object):
             logging.warning(str(filename) + ' is not found.')
         return obj_json
 
-    def dump(self):
+    def dump(self, dist_filename=None):
         if self.validate():
-            filename = os.path.join(os.getcwd(), self._filenames['cfg'])
+            config_filename = self._name + '.cfg'
+            if dist_filename is None:
+                pass
+            else:
+                config_filename = dist_filename
+            filename = os.path.join(os.getcwd(), config_filename)
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(self._value, f, indent=4)
         else:
