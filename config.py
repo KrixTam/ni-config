@@ -97,6 +97,9 @@ class config(object):
     def __repr__(self):
         return self._value.__repr__()
 
+    def __contains__(self, item):
+        return item in self._value
+
     def is_default(self):
         return self._value == self._default
 
