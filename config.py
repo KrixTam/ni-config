@@ -5,6 +5,7 @@ import yaml
 import json
 import logging
 from jsonschema import validate, ValidationError
+from copy import deepcopy
 
 
 class config(object):
@@ -12,7 +13,7 @@ class config(object):
     def __init__(self, desc):
         # 初始化
         self._name = ''
-        self._value = None
+        self._value = {}
         self._desc = {}
         self._default = {}
         # 根据不同的参数进行构建实例
@@ -100,8 +101,11 @@ class config(object):
     def __contains__(self, item):
         return item in self._value
 
-    def is_default(self):
-        return self._value == self._default
+    def is_default(self, key: str = None):
+        if key is None:
+            return self._value == self._default
+        else:
+            return self._value[key] == self._default[key]
 
     def set_default(self):
-        self._value = self._default.copy()
+        self._value = deepcopy(self._default)

@@ -37,6 +37,12 @@ class TestConfig(unittest.TestCase):
         c.dump()
         self.assertEqual(c.load(os.path.join(os.getcwd(), 'config.cfg')), c.load(os.path.join(os.getcwd(), 'config.default.cfg')))
 
+    def test_is_default(self):
+        c = config('config')
+        self.assertTrue(c.is_default())
+        c['base']['name'] = '123'
+        self.assertFalse(c.is_default('base'))
+
 
 if __name__ == '__main__':
     unittest.main()

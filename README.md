@@ -21,6 +21,24 @@
 | str | 不含扩展名的文件名，一般为当前目录下、以”desc“为后缀的文件名，如：server.desc |
 | dict | 包含“name”、“default”、“schema”定义的词典 |
 
+## 关于默认值
+
+可以通过*set_default*方法来初始化配置实例的默认值
+
+> config("server").set_default()
+
+如若想检查目前的设定是否是默认值，可以使用*is_default*方法
+
+> c = config("server")
+> 
+> c.set_default()
+> 
+> c.is_default()
+> 
+> c.is_default('ip')
+
+如果仅希望检查某个配置是否为默认值，把该配置项作为参数传递给*is_default*方法，默认不传递参数的情况下，将会对所有配置项进行检查
+
 ## validate
 
 校验配置文件的内容是否与定义的一致。
