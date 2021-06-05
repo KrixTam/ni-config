@@ -8,6 +8,20 @@ from jsonschema import validate, ValidationError
 from copy import deepcopy
 
 
+def replace(ori_object, update_object):
+    if type(ori_object) == type(update_object):
+        if isinstance(ori_object, dict):
+            new_object = deepcopy(ori_object)
+            for key, value in update_object.items():
+                if key in ori_object:
+                    new_object[key] = replace(ori_object[key], value)
+            return new_object
+        else:
+            return update_object
+    else:
+        raise TypeError('Type of parameter update_object should be the same as type of parameter ori_object.')
+
+
 class config(object):
 
     def __init__(self, desc):
@@ -83,8 +97,8 @@ class config(object):
         if key in self._value:
             t = type(self._default[key])
             if isinstance(value, t):
-                old_value = self._value.copy()
-                self._value[key] = value
+                old_value = deepcopy(self._value)
+                self._value[key] = replace(self._value[key], value)
                 if self.validate():
                     pass
                 else:

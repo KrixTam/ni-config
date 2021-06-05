@@ -26,7 +26,7 @@ class TestConfig(unittest.TestCase):
         c = config('config')
         d = {'name': 'base_filename', 'key': 'key_field'}
         self.assertEqual(c['base'], d)
-        c['base']['name'] = '123'
+        c['base'] = {'name': '123'}
         self.assertNotEqual(c['base'], d)
         self.assertTrue(c.validate())
         c['base']['name'] = 123
