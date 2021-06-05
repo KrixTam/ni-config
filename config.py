@@ -101,11 +101,24 @@ class config(object):
     def __contains__(self, item):
         return item in self._value
 
-    def is_default(self, key: str = None):
+    def is_default(self, key=None):
         if key is None:
             return self._value == self._default
         else:
-            return self._value[key] == self._default[key]
+            if isinstance(key, str):
+                return self._value[key] == self._default[key]
+            if isinstance(key, list):
+                num = len(key)
+                if num > 0:
+                    value = self._value[key[0]]
+                    default = self._default[key[0]]
+                    for i in range(1, num):
+                        value = value[key[i]]
+                        default = default[key[i]]
+                    return value == default
+                else:
+                    raise ValueError('While parameter "key" is a list, it should contain one item at least.')
+            raise TypeError('Parameter "key" should be str or list.')
 
     def set_default(self):
         self._value = deepcopy(self._default)

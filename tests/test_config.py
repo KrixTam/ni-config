@@ -40,8 +40,10 @@ class TestConfig(unittest.TestCase):
     def test_is_default(self):
         c = config('config')
         self.assertTrue(c.is_default())
+        self.assertTrue(c.is_default(['base', 'key']))
         c['base']['name'] = '123'
         self.assertFalse(c.is_default('base'))
+        self.assertFalse(c.is_default(['base', 'name']))
 
 
 if __name__ == '__main__':
