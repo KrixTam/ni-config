@@ -90,3 +90,12 @@
 > print(c["ip"])
 > 
 > "192.168.1.101"
+> 
+
+## 加密型config
+
+为了更好的保护config，不那么容易被篡改，在*config*的基础上，构建*EncryptionConfig*。
+
+为了创建一个*EncryptionConfig*对象，必须为其提供一个*Codec*；为此，你必须根据自己实际的需要，设计一个*Codec*的子类。
+
+为了更好的展示使用方式，我建立了一个*EasyCodec*，可以通过测试用例中参考其应用方式。

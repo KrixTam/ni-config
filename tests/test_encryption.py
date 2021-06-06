@@ -1,19 +1,19 @@
 # coding: utf-8
 
 import unittest
-from config import config
+from config import EncryptionConfig, EasyCodec, config
 import os
 
 
 def set_error():
-    c = config('config')
+    c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
     c['abc'] = 123
 
 
-class TestConfig(unittest.TestCase):
+class TestEncryptionConfig(unittest.TestCase):
 
     def test_all(self):
-        c = config('config')
+        c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
         self.assertTrue(c.validate())
 
     def test_set_error(self):
@@ -22,7 +22,7 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(isinstance(context.exception, KeyError))
 
     def test_get_set(self):
-        c = config('config')
+        c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
         d = {'name': 'base_filename', 'key': 'key_field'}
         self.assertEqual(c['base'], d)
         c['base'] = {'name': '123'}
@@ -32,12 +32,13 @@ class TestConfig(unittest.TestCase):
         self.assertFalse(c.validate())
 
     def test_dump(self):
+        ec = EncryptionConfig('cr-config', EasyCodec('key.dat'))
+        ec.dump()
         c = config('config')
-        c.dump()
-        self.assertEqual(c.load(os.path.join(os.getcwd(), 'config.cfg')), c.load(os.path.join(os.getcwd(), 'config.default.cfg')))
+        self.assertEqual(ec._load(os.path.join(os.getcwd(), 'cr-config.cfg')), c._load(os.path.join(os.getcwd(), 'config.default.cfg')))
 
     def test_is_default(self):
-        c = config('config')
+        c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
         self.assertTrue(c.is_default())
         self.assertTrue(c.is_default(['base', 'key']))
         c['base']['name'] = '123'
