@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import unittest
-from config import EasyCodec
+from ni.config import EasyCodec
 
 
 class TestCodec(unittest.TestCase):

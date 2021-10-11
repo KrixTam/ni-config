@@ -14,9 +14,9 @@
 
 ## 构建实例
 
-> from config import config
+> from ni.config import Config
 > 
-> c = config(desc)
+> c = Config(desc)
 
 | desc | 说明 |
 | --- | --- |
@@ -27,11 +27,11 @@
 
 可以通过*set_default*方法来初始化配置实例的默认值
 
-> config("server").set_default()
+> Config("server").set_default()
 
 如若想检查目前的设定是否是默认值，可以使用*is_default*方法
 
-> c = config("server")
+> c = Config("server")
 > 
 > c.set_default()
 > 
@@ -63,27 +63,27 @@
 
 校验配置文件的内容是否与定义的一致。
 
-> config("server").validate()
+> Config("server").validate()
 
 ## load_config
 
 加载配置文件内容，并对内容进行校验，如果校验失败，则回退到原来的配置内容。
 
-> config("server").load_config("slaver.cfg")
+> Config("server").load_config("slaver.cfg")
 
 ## dump
 
 把配置内容输出到指定文件
 
-> config("server").dump()
+> Config("server").dump()
 > 
-> config("server").dump("master.cfg")
+> Config("server").dump("master.cfg")
 
 ## Get + Set
 
 对config对象中的配置进行修订、设置，或者获取相关配置项的信息；进行修改/设置时，会对变更后的配置内容进行有效性校验，如果校验失败，则回退到原来的配置内容。
 
-> c = config("server")
+> c = Config("server")
 > 
 > c["ip"] = "192.168.1.101"
 > 
@@ -92,10 +92,10 @@
 > "192.168.1.101"
 > 
 
-## 加密型config
+## 加密型Config
 
-为了更好的保护config，不那么容易被篡改，在*config*的基础上，构建*EncryptionConfig*。
+为了更好的保护config，不那么容易被篡改，在*Config*的基础上，构建*EncryptionConfig*。
 
 为了创建一个*EncryptionConfig*对象，必须为其提供一个*Codec*；为此，你必须根据自己实际的需要，设计一个*Codec*的子类。
 
-为了更好的展示使用方式，我建立了一个*EasyCodec*，可以通过测试用例中参考其应用方式。
+为了更好的展示其使用方式，我建立了一个*EasyCodec*，可以通过测试用例中参考其应用方式。

@@ -1,7 +1,7 @@
 # coding: utf-8
 
 import unittest
-from config import EncryptionConfig, EasyCodec, config
+from ni.config import EncryptionConfig, EasyCodec, Config
 import os
 
 
@@ -34,8 +34,9 @@ class TestEncryptionConfig(unittest.TestCase):
     def test_dump(self):
         ec = EncryptionConfig('cr-config', EasyCodec('key.dat'))
         ec.dump()
-        c = config('config')
-        self.assertEqual(ec._load(os.path.join(os.getcwd(), 'cr-config.cfg')), c._load(os.path.join(os.getcwd(), 'config.default.cfg')))
+        c = Config('config')
+        self.assertEqual(ec._load(os.path.join(os.getcwd(), 'cr-config.cfg')), c._load(os.path.join(os.getcwd(),
+                                                                                                    'config.default.cfg')))
 
     def test_is_default(self):
         c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
