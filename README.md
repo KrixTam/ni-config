@@ -81,7 +81,7 @@
 
 ## Get + Set
 
-对config对象中的配置进行修订、设置，或者获取相关配置项的信息；进行修改/设置时，会对变更后的配置内容进行有效性校验，如果校验失败，则回退到原来的配置内容。
+对Config对象中的配置进行修订、设置，或者获取相关配置项的信息；进行修改/设置时，会对变更后的配置内容进行有效性校验，如果校验失败，则回退到原来的配置内容。
 
 > c = Config("server")
 > 
@@ -92,10 +92,24 @@
 > "192.168.1.101"
 > 
 
-## 加密型Config
+## 加密型Config：EncryptionConfig
 
-为了更好的保护config，不那么容易被篡改，在*Config*的基础上，构建*EncryptionConfig*。
+为了更好的保护Config，不那么容易被篡改，在*Config*的基础上，构建*EncryptionConfig*。
 
 为了创建一个*EncryptionConfig*对象，必须为其提供一个*Codec*；为此，你必须根据自己实际的需要，设计一个*Codec*的子类。
 
 为了更好的展示其使用方式，我建立了一个*EasyCodec*，可以通过测试用例中参考其应用方式。
+
+## 参数校验器：ParameterValidator
+
+为了方便对参数进行校验处理，通过对封装，以便于日常代码中的参数校验使用。
+
+> from ni.config import ParameterValidator
+> 
+> validator = ParameterValidator({'x': {"type": ["number", "string"]}})
+> 
+> validator.validates({'b': '231'})
+> 
+> validator.validates({'x': '231'})
+> 
+> validator.validate('x', 231)
