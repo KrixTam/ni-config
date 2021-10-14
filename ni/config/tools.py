@@ -15,6 +15,7 @@ class Logger(object):
         # add ch to logger
         self._core.addHandler(ch)
         self._error_def = error_def
+        self._log_msg = '[####] 临时打印信息：\n{0}'
 
     def debug(self, msg_args: list, *args, **kwargs):
         msg_id = str(msg_args[0])
@@ -40,6 +41,10 @@ class Logger(object):
         msg_id = str(msg_args[0])
         msg = self._error_def[msg_id].format(*msg_args)
         self._core.critical(msg, *args, **kwargs)
+
+    def log(self, obj, *args, **kwargs):
+        msg = self._log_msg.format(*[obj])
+        self._core.info(msg, *args, **kwargs)
 
 
 ERROR_DEF = {
