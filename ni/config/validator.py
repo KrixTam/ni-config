@@ -1,6 +1,5 @@
-# coding: utf-8
-
 from jsonschema import validate, ValidationError
+from ni.config.tools import logger
 
 
 class ParameterValidator(object):
@@ -10,26 +9,29 @@ class ParameterValidator(object):
 
     def validates(self, parameters: dict):
         res = True
-        try:
-            for parameter_name, parameter_value in parameters.items():
-                if parameter_name in self._parameter_schema:
+        for parameter_name, parameter_value in parameters.items():
+            if parameter_name in self._parameter_schema:
+                try:
                     validate(instance=parameter_value, schema=self._parameter_schema[parameter_name])
-                else:
+                except ValidationError:
+                    logger.warning([1000, parameter_name])
                     res = False
                     break
-        except ValidationError:
-            res = False
-        finally:
-            return res
+            else:
+                logger.warning([1001, parameter_name])
+                res = False
+                break
+        return res
 
     def validate(self, parameter_name: str, parameter_value):
         res = True
-        try:
-            if parameter_name in self._parameter_schema:
+        if parameter_name in self._parameter_schema:
+            try:
                 validate(instance=parameter_value, schema=self._parameter_schema[parameter_name])
-            else:
+            except ValidationError:
+                logger.warning([1000, parameter_name])
                 res = False
-        except ValidationError:
+        else:
+            logger.warning([1001, parameter_name])
             res = False
-        finally:
-            return res
+        return res
