@@ -1,5 +1,3 @@
-# coding: utf-8
-
 import unittest
 from ni.config import ParameterValidator
 

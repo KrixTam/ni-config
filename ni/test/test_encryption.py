@@ -1,8 +1,6 @@
-# coding: utf-8
-
+import os
 import unittest
 from ni.config import EncryptionConfig, EasyCodec, Config
-import os
 
 
 def set_error():
