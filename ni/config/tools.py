@@ -44,7 +44,9 @@ class Logger(object):
 
 ERROR_DEF = {
     '1000': '[{0}] 待校验参数{1}类型或其值异常，验证不通过',
-    '1001': '[{0}] 待校验参数{1}属于非法参数，验证不通过'
+    '1001': '[{0}] 待校验参数{1}属于非法参数，验证不通过',
+    '2000': '[{0}] Succeeded reading file "{1}".',
+    '2001': '[{0}] {1} is not found.'
 }
 
 logger = Logger(ERROR_DEF)

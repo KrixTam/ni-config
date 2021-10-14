@@ -3,7 +3,7 @@
 import os
 import yaml
 import json
-import logging
+from ni.config.tools import logger
 from jsonschema import validate, ValidationError
 from copy import deepcopy
 from abc import ABCMeta, abstractmethod
@@ -74,9 +74,9 @@ class Config(object):
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 obj_json = yaml.safe_load(f)
-                logging.info('Succeeded reading file "' + filename + '".')
+                logger.info([2000, filename])
         else:
-            logging.warning(str(filename) + ' is not found.')
+            logger.warning([2001, str(filename)])
         return obj_json
 
     def _dump(self, filename):
@@ -170,9 +170,9 @@ class EncryptionConfig(Config):
             with open(filename, 'rb') as f:
                 content = f.read()
                 obj_json = yaml.safe_load(self._codec.decode(content))
-                logging.info('Succeeded reading file "' + filename + '".')
+                logger.info([2000, filename])
         else:
-            logging.warning(str(filename) + ' is not found.')
+            logger.warning([2001, str(filename)])
         return obj_json
 
     def _dump(self, filename):
