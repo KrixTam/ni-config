@@ -3,11 +3,6 @@ import unittest
 from ni.config import EncryptionConfig, EasyCodec, Config
 
 
-def set_error():
-    c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
-    c['abc'] = 123
-
-
 class TestEncryptionConfig(unittest.TestCase):
 
     def test_all(self):
@@ -15,9 +10,9 @@ class TestEncryptionConfig(unittest.TestCase):
         self.assertTrue(c.validate())
 
     def test_set_error(self):
-        with self.assertRaises(Exception) as context:
-            set_error()
-        self.assertTrue(isinstance(context.exception, KeyError))
+        c = EncryptionConfig('cr-config', EasyCodec('key.dat'))
+        with self.assertRaises(KeyError):
+            c['abc'] = 123
 
     def test_get_set(self):
         c = EncryptionConfig('cr-config', EasyCodec('key.dat'))

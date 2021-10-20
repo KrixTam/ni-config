@@ -19,7 +19,7 @@ def replace(ori_object, update_object):
         else:
             return update_object
     else:
-        raise TypeError('Type of parameter update_object should be the same as type of parameter ori_object.')
+        raise TypeError(logger.error([4000, type(update_object), type(ori_object)]))
 
 
 class Config(object):
@@ -43,7 +43,7 @@ class Config(object):
                 self._desc = desc['schema']
                 self._default = desc['default']
             else:
-                raise TypeError('Parameter "desc" should be str or dict.')
+                raise TypeError(logger.error([3000]))
         self.set_default()
 
     def validate(self):
@@ -60,7 +60,7 @@ class Config(object):
             pass
         else:
             self._value = old_value
-            raise ValueError('Value for setting is invalid.')
+            raise ValueError(logger.error([3001, config_filename]))
 
     def _load(self, ori_filename):
         return Config.load(ori_filename)
@@ -72,9 +72,9 @@ class Config(object):
         if os.path.exists(filename):
             with open(filename, 'r') as f:
                 obj_json = yaml.safe_load(f)
-                logger.info([2000, filename])
+                logger.info([3002, filename])
         else:
-            logger.warning([2001, str(filename)])
+            logger.warning([3003, filename])
         return obj_json
 
     def _dump(self, filename):
@@ -91,13 +91,13 @@ class Config(object):
             filename = os.path.join(os.getcwd(), config_filename)
             self._dump(filename)
         else:
-            raise AssertionError('Value of "' + self._name + '" is invalid.')
+            raise AssertionError(logger.error([3004, self._name]))
 
     def __getitem__(self, item):
         if item in self._value:
             return self._value[item]
         else:
-            raise KeyError('Key "' + item + '" is not found in config object "' + self._name + '".')
+            raise KeyError(logger.error([3005, self._name, item]))
 
     def __setitem__(self, key, value):
         if key in self._value:
@@ -109,11 +109,11 @@ class Config(object):
                     pass
                 else:
                     self._value = old_value
-                    raise ValueError('Value for setting is invalid.')
+                    raise ValueError(logger.error([3006, key]))
             else:
-                raise ValueError('Value for setting should be ' + str(t) + '.')
+                raise ValueError(logger.error([3007, key, t]))
         else:
-            raise KeyError('Key "' + key + '" is not found in config object "' + self._name + '".')
+            raise KeyError(logger.error([3005, self._name, key]))
 
     def __repr__(self):
         return self._value.__repr__()
@@ -137,8 +137,8 @@ class Config(object):
                         default = default[key[i]]
                     return value == default
                 else:
-                    raise ValueError('While parameter "key" is a list, it should contain one item at least.')
-            raise TypeError('Parameter "key" should be str or list.')
+                    raise ValueError(logger.error([3008]))
+            raise TypeError(logger.error([3009]))
 
     def set_default(self):
         self._value = deepcopy(self._default)
