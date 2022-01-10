@@ -3,7 +3,7 @@ import unittest
 from ni.config import Config
 
 cwd = os.path.abspath(os.path.dirname(__file__))
-test_config_filename = os.path.join(cwd, 'config')
+test_config_filename = os.path.join(cwd, 'sources','config')
 
 
 class TestConfig(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestConfig(unittest.TestCase):
     def test_dump(self):
         c = Config(test_config_filename)
         c.dump()
-        self.assertEqual(c.load('config.cfg'), c.load(os.path.join(cwd, 'config.default.cfg')))
+        self.assertEqual(c.load('config.cfg'), c.load(os.path.join(cwd, 'sources', 'config.default.cfg')))
 
     def test_is_default(self):
         c = Config(test_config_filename)

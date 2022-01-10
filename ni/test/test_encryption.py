@@ -3,9 +3,9 @@ import unittest
 from ni.config import EncryptionConfig, EasyCodec, Config
 
 cwd = os.path.abspath(os.path.dirname(__file__))
-test_filename = os.path.join(cwd, 'key.dat')
-test_config_filename = os.path.join(cwd, 'config')
-test_cr_config_filename = os.path.join(cwd, 'cr-config')
+test_filename = os.path.join(cwd, 'sources', 'key.dat')
+test_config_filename = os.path.join(cwd, 'sources', 'config')
+test_cr_config_filename = os.path.join(cwd, 'sources', 'cr-config')
 
 
 class TestEncryptionConfig(unittest.TestCase):
@@ -33,7 +33,7 @@ class TestEncryptionConfig(unittest.TestCase):
         ec = EncryptionConfig(test_cr_config_filename, EasyCodec(test_filename))
         ec.dump()
         c = Config(test_config_filename)
-        self.assertEqual(ec._load(os.path.join(os.getcwd(), 'cr-config.cfg')), c._load(os.path.join(cwd, 'config.default.cfg')))
+        self.assertEqual(ec._load(os.path.join(os.getcwd(), 'cr-config.cfg')), c._load(os.path.join(cwd, 'sources', 'config.default.cfg')))
 
     def test_is_default(self):
         c = EncryptionConfig(test_cr_config_filename, EasyCodec(test_filename))

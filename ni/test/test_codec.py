@@ -3,7 +3,7 @@ import os
 from ni.config import EasyCodec
 
 cwd = os.path.abspath(os.path.dirname(__file__))
-test_filename = os.path.join(cwd, 'key.dat')
+test_filename = os.path.join(cwd, 'sources', 'key.dat')
 
 
 class TestCodec(unittest.TestCase):
