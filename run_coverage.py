@@ -18,7 +18,7 @@ def run_all_tests(test_modules):
 
 
 # 删除测试文件
-test_files = ['config.cfg', 'cr-config.cfg']
+test_files = ['config.cfg', 'cr-config.cfg', 'config_dump.cfg']
 for filename in test_files:
     if os.path.exists(filename):
         os.remove(filename)

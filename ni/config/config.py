@@ -57,15 +57,18 @@ class Config(object):
         old_value = deepcopy(self._value)
         values = self._load(config_filename)
         for k, v in values.items():
-            self[k] = v
-        if self.validate():
-            pass
-        else:
-            self._value = old_value
-            raise ValueError(logger.error([3001, config_filename]))
+            try:
+                self[k] = v
+            except ValueError:
+                self._value = old_value
+                raise ValueError(logger.error([3001, config_filename]))
 
     def _load(self, ori_filename):
-        return Config.load(ori_filename)
+        result = Config.load(ori_filename)
+        if result is None:
+            return {}
+        else:
+            return result
 
     @staticmethod
     def load(ori_filename):
@@ -150,11 +153,11 @@ class Codec(metaclass=ABCMeta):
 
     @abstractmethod
     def encode(self, content):
-        pass
+        pass  # pragma: no cover
 
     @abstractmethod
     def decode(self, content):
-        pass
+        pass  # pragma: no cover
 
 
 class EncryptionConfig(Config):
@@ -173,7 +176,10 @@ class EncryptionConfig(Config):
                 logger.info([2000, filename])
         else:
             logger.warning([2001, str(filename)])
-        return obj_json
+        if obj_json is None:
+            return {}
+        else:
+            return obj_json
 
     def _dump(self, filename):
         with open(filename, 'wb') as f:

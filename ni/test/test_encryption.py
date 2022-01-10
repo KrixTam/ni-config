@@ -43,6 +43,12 @@ class TestEncryptionConfig(unittest.TestCase):
         self.assertFalse(c.is_default('base'))
         self.assertFalse(c.is_default(['base', 'name']))
 
+    def test_load_config(self):
+        c = EncryptionConfig(test_cr_config_filename, EasyCodec(test_filename))
+        self.assertTrue(c.is_default())
+        c.load_config('config_filename_1231232121')
+        self.assertTrue(c.is_default())
+
 
 if __name__ == '__main__':
     unittest.main()
