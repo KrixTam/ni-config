@@ -24,5 +24,6 @@ class TestCodec(unittest.TestCase):
         message = '测试一下这个能否正确加解密'
         self.assertEqual(message, ec_01.decode(ec.encode(message)))
 
+
 if __name__ == '__main__':
     unittest.main()

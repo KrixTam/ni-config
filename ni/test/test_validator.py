@@ -14,9 +14,17 @@ class TestParameterValidator(unittest.TestCase):
         self.assertTrue(validator.validates({'a': '123', 'b': 231, 'c': False}))
         self.assertTrue(validator.validates({'b': '231'}))
 
-    def test_error(self):
+    def test_error_01(self):
         self.assertFalse(validator.validate('d', 123))
+
+    def test_error_02(self):
         self.assertFalse(validator.validate('a', 123))
+
+    def test_error_03(self):
+        self.assertFalse(validator.validates({'a': '123', 'd': 231, 'c': False}))
+
+    def test_error_04(self):
+        self.assertFalse(validator.validates({'a': 123, 'c': False}))
 
 
 if __name__ == '__main__':

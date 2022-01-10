@@ -18,7 +18,7 @@ def run_all_tests(test_modules):
 
 
 # 删除测试文件
-test_files = ['config.cfg', 'cr-config.cfg', 'config_dump.cfg']
+test_files = ['config.cfg', 'cr-config.cfg', 'config_dump.cfg', 'test_key.dat']
 for filename in test_files:
     if os.path.exists(filename):
         os.remove(filename)
@@ -27,7 +27,8 @@ test_modules = [
     'ni.test.test_codec',
     'ni.test.test_config',
     'ni.test.test_encryption',
-    'ni.test.test_validator'
+    'ni.test.test_validator',
+    'ni.test.test_tools'
 ]
 
 # 执行测试用例
