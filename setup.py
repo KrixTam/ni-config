@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='ni-config',
-    version='0.0.11',
+    version='0.0.12beta',
     packages=['ni', 'ni.config'],
     url='https://github.com/KrixTam/ni-config',
     license='MIT',

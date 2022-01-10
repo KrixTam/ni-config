@@ -55,7 +55,9 @@ class Config(object):
 
     def load_config(self, config_filename):
         old_value = deepcopy(self._value)
-        self._value = self._load(config_filename)
+        values = self._load(config_filename)
+        for k, v in values.items():
+            self[k] = v
         if self.validate():
             pass
         else:
