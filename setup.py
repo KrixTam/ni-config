@@ -25,8 +25,8 @@ setup(
     py_modules=["config"],
     python_requires=">=3.6",
     install_requires=[
-        'jsonschema',
-        'pyyaml',
-        'cryptography'
+        'jsonschema>=3.2.0',
+        'pyyaml>=5.4.1',
+        'cryptography>=3.4.7'
     ]
 )
