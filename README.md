@@ -125,3 +125,5 @@ validator.validates({'x': '231'})
 
 validator.validate('x', 231)
 ```
+
+> 版本v0.0.13开始，*ParameterValidator.validates*支持**strict**参数，当其为*True*时，被校验参数必须包含必须的默认参数，否则当作校验失败处理。为兼容之前版本，**strict**参数的默认值为*False*。

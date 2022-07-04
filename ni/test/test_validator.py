@@ -12,6 +12,7 @@ validator = ParameterValidator(schema)
 class TestParameterValidator(unittest.TestCase):
     def test_default(self):
         self.assertTrue(validator.validates({'a': '123', 'b': 231, 'c': False}))
+        self.assertFalse(validator.validates({'a': '123', 'b': 231}, True))
         self.assertTrue(validator.validates({'b': '231'}))
 
     def test_error_01(self):
@@ -26,6 +27,9 @@ class TestParameterValidator(unittest.TestCase):
     def test_error_04(self):
         self.assertFalse(validator.validates({'a': 123, 'c': False}))
 
+    def test_error_05(self):
+        self.assertFalse(validator.validates({'a': '123', 'b': [231], 'c': False}, True))
+
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main()  # pragma: no cover
