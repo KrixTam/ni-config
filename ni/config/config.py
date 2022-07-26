@@ -11,11 +11,14 @@ from cryptography.fernet import Fernet
 def replace(ori_object, update_object):
     if type(ori_object) == type(update_object):
         if isinstance(ori_object, dict):
-            new_object = deepcopy(ori_object)
-            for key, value in update_object.items():
-                if key in ori_object:
-                    new_object[key] = replace(ori_object[key], value)
-            return new_object
+            if len(ori_object) == 0:
+                return update_object
+            else:
+                new_object = deepcopy(ori_object)
+                for key, value in update_object.items():
+                    if key in ori_object:
+                        new_object[key] = replace(ori_object[key], value)
+                return new_object
         else:
             return update_object
     else:
