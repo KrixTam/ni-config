@@ -118,7 +118,7 @@ class TestConfig(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.load_config(config_filename)
 
-    def test_empty_dict(self):
+    def test_empty_dict_01(self):
         c = Config({
             'name': 'CSVFileElf',
             'default': {
@@ -240,6 +240,224 @@ class TestConfig(unittest.TestCase):
         }
         c['merge'] = config
         self.assertEqual(c['merge']['mappings'], config['mappings'])
+        config_01 = {
+            'mappings': {
+                '日期': {'权益登记日': '生效日期', '拆分折算日': '生效日期'}
+            }
+        }
+        c['merge'] = config_01
+        self.assertNotEqual(c['merge']['mappings'], config['mappings'])
+        self.assertEqual(c['merge']['mappings'], config_01['mappings'])
+
+    def test_empty_dict_02(self):
+        c = Config({
+            'name': 'CSVFileElf',
+            'default': {
+                'add': {
+                    'base': {
+                        'name': 'base_filename',
+                        'key': 'key_field',
+                        'drop_duplicates': False,
+                    },
+                    'output': {
+                        'name': 'output_filename',
+                        'BOM': False,
+                        'non-numeric': []
+                    },
+                    'tags': [
+                        {
+                            'name': 'tags_filename',
+                            'key': 'key_field',
+                            'fields': ['field A', 'field B'],
+                            'defaults': ['default value of field A', 'default value of field B']
+                        }
+                    ]
+                },
+                'merge': {
+                    'input': ['input_filename_01', 'input_filename_02'],
+                    'output': {
+                        'name': 'output_filename',
+                        'BOM': False,
+                        'non-numeric': []
+                    },
+                    'on': ['field_name'],
+                    'mappings': {}
+                }
+            },
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'add': {
+                        'type': 'object',
+                        'properties': {
+                            'base': {
+                                'type': 'object',
+                                'properties': {
+                                    'name': {'type': 'string'},
+                                    'key': {'type': 'string'},
+                                    'drop_duplicates': {'type': 'boolean'}
+                                }
+                            },
+                            'output': {
+                                'type': 'object',
+                                'properties': {
+                                    'name': {'type': 'string'},
+                                    'BOM': {'type': 'boolean'},
+                                    'non-numeric': {
+                                        'type': 'array',
+                                        'items': {'type': 'string'}
+                                    }
+                                }
+                            },
+                            'tags': {
+                                'type': 'array',
+                                'items': {
+                                    'type': 'object',
+                                    'properties': {
+                                        'name': {'type': 'string'},
+                                        'key': {'type': 'string'},
+                                        'fields': {
+                                            'type': 'array',
+                                            'items': {'type': 'string'}
+                                        },
+                                        'defaults': {
+                                            'type': 'array',
+                                            'items': {'type': 'string'}
+                                        }
+                                    }
+                                },
+                                'minItems': 1
+                            }
+                        }
+                    },
+                    'merge': {
+                        'type': 'object',
+                        'properties': {
+                            'input': {
+                                'type': 'array',
+                                'items': {'type': 'string'},
+                                'minItems': 2
+                            },
+                            'output': {
+                                'type': 'object',
+                                'properties': {
+                                    'prefix': {'type': 'string'},
+                                    'BOM': {'type': 'boolean'},
+                                    'non-numeric': {
+                                        'type': 'array',
+                                        'items': {'type': 'string'}
+                                    }
+                                }
+                            },
+                            'on': {
+                                'type': 'array',
+                                'items': {'type': 'string'},
+                                'minItems': 1
+                            },
+                            'mappings': {'type': 'object'}
+                        }
+                    }
+                }
+            }
+        })
+        config = {
+            'tags': [
+                {
+                    'name': 'tags_filename1',
+                    'key': 'key_field1',
+                    'fields': ['field A1', 'field B1'],
+                    'defaults': ['default value of field A1', 'default value of field B1']
+                },
+                {
+                    'name': 'tags_filename2',
+                    'key': 'key_field2',
+                    'fields': ['field A2', 'field B2'],
+                    'defaults': ['default value of field A2', 'default value of field B2']
+                }
+            ]
+        }
+        c['add'] = config
+        self.assertEqual(c['add']['tags'], config['tags'])
+        config_01 = {
+            'tags': [
+                {
+                    'name': '123',
+                    'key': '吃啥',
+                    'defaults': ['啊', '嗨']
+                }
+            ]
+        }
+        c['add'] = config_01
+        self.assertNotEqual(c['add']['tags'], config['tags'])
+        self.assertEqual(c['add']['tags'], config_01['tags'])
+
+    def test_empty_dict_03(self):
+        c = Config({
+            'name': 'CSVFileElf',
+            'default': {
+                'merge': {
+                    'input': ['input_filename_01', 'input_filename_02'],
+                    'output': {
+                        'name': 'output_filename',
+                        'BOM': False,
+                        'non-numeric': []
+                    },
+                    'on': ['field_name'],
+                    'mappings': {'123': 456}
+                }
+            },
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'merge': {
+                        'type': 'object',
+                        'properties': {
+                            'input': {
+                                'type': 'array',
+                                'items': {'type': 'string'},
+                                'minItems': 2
+                            },
+                            'output': {
+                                'type': 'object',
+                                'properties': {
+                                    'prefix': {'type': 'string'},
+                                    'BOM': {'type': 'boolean'},
+                                    'non-numeric': {
+                                        'type': 'array',
+                                        'items': {'type': 'string'}
+                                    }
+                                }
+                            },
+                            'on': {
+                                'type': 'array',
+                                'items': {'type': 'string'},
+                                'minItems': 1
+                            },
+                            'mappings': {'type': 'object'}
+                        }
+                    }
+                }
+            }
+        })
+        config = {
+            'output': {
+                'name': 'merge_01.csv',
+                'BOM': False,
+                'non-numeric': []
+            },
+            'on': ['生效日期', '基金代码'],
+            'mappings': {'权益登记日': '生效日期', '拆分折算日': '生效日期'}
+        }
+        c['merge'] = config
+        self.assertEqual(c['merge']['mappings'], config['mappings'])
+        config_01 = {
+            'mappings': {
+                '日期': {'权益登记日': '生效日期', '拆分折算日': '生效日期'}
+            }
+        }
+        c['merge'] = config_01
+        self.assertNotEqual(c['merge']['mappings'], config['mappings'])
+        self.assertEqual(c['merge']['mappings'], config_01['mappings'])
 
 
 if __name__ == '__main__':

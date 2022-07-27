@@ -8,21 +8,36 @@ from abc import ABCMeta, abstractmethod
 from cryptography.fernet import Fernet
 
 
-def replace(ori_object, update_object):
+def replace(ori_object, update_object, default_object=None):
     if type(ori_object) == type(update_object):
         if isinstance(ori_object, dict):
             if len(ori_object) == 0:
                 return update_object
             else:
-                new_object = deepcopy(ori_object)
-                for key, value in update_object.items():
-                    if key in ori_object:
-                        new_object[key] = replace(ori_object[key], value)
-                return new_object
+                if (default_object is not None) and (len(default_object) == 0):
+                    return update_object
+                else:
+                    new_object = deepcopy(ori_object)
+                    for key, value in update_object.items():
+                        if key in ori_object:
+                            if (default_object is not None) and (key in default_object):
+                                new_object[key] = replace(ori_object[key], value, default_object[key])
+                    return new_object
         else:
             return update_object
     else:
         raise TypeError(logger.error([4000, type(update_object), type(ori_object)]))
+
+
+def tidy_default(default_object, schema_object):
+    new_object = deepcopy(default_object)
+    for key, value in new_object.items():
+        if isinstance(value, dict):
+            if 'properties' in schema_object['properties'][key]:
+                new_object[key] = tidy_default(value, schema_object['properties'][key])
+            else:
+                new_object[key] = {}
+    return new_object
 
 
 class Config(object):
@@ -47,6 +62,7 @@ class Config(object):
                 self._default = desc['default']
             else:
                 raise TypeError(logger.error([3000]))
+        self._default = tidy_default(self._default, self._desc)
         self.set_default()
 
     def validate(self):
@@ -112,7 +128,7 @@ class Config(object):
             t = type(self._default[key])
             if isinstance(value, t):
                 old_value = deepcopy(self._value)
-                self._value[key] = replace(self._value[key], value)
+                self._value[key] = replace(self._value[key], value, self._default[key])
                 if self.validate():
                     pass
                 else:
